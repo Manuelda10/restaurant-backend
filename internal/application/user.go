@@ -7,20 +7,21 @@ import (
 	"github.com/Manuelda10/restaurant-backend/internal/ports"
 )
 
-type UserUseCase struct{
+type UserUseCase struct {
 	userRepository ports.UserRepository
 }
 
-func NewUserUseCase(userRepository ports.UserRepository) *UserUseCase {
+func NewUserUseCase(userRepo ports.UserRepository) *UserUseCase {
 	return &UserUseCase{
-		userRepository: userRepository,
+			userRepository: userRepo,
 	}
 }
 
-func (u *UserUseCase) RegisterUser(ctx context.Context, user *domain.User) error {
-	return u.userRepository.CreateUser(ctx, user)
+func (uc *UserUseCase) CreateUser(ctx context.Context, user *domain.User) error {
+	// Lógica adicional y validaciones
+	return uc.userRepository.CreateUser(ctx, user)
 }
 
-func (u *UserUseCase) GetUserByID(ctx context.Context, userID int64) (*domain.User, error) {
-	return u.userRepository.GetUserByID(ctx, userID)
+func (uc *UserUseCase) GetUserByID(ctx context.Context, id int64) (*domain.User, error) {
+	return uc.userRepository.GetUserByID(ctx, id)
 }

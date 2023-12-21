@@ -12,6 +12,6 @@ type User struct {
 	PhoneNumber	string    `json:"phone_number"`
 	CreatedOn 	time.Time `json:"created_on"`
 	CreatedBy 	int    		`json:"created_by"`
-	UpdatedOn 	time.Time `json:"updated_on"`
-	UpdatedBy 	int    		`json:"updated_by"`
+	UpdatedOn 	*time.Time `json:"updated_on"`
+	UpdatedBy 	*int    		`json:"updated_by"`
 }
