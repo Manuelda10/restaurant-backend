@@ -1,16 +1,17 @@
 package routes
 
 import (
-	"net/http"
+	"database/sql"
 
 	"github.com/go-chi/chi/v5"
 )
 
-func NewRouter() http.Handler {
+func Router (dbConn *sql.DB) *chi.Mux {
 	r := chi.NewRouter()
-	r.Get("/", func(w http.ResponseWriter, r *http.Request) {
-		w.Write([]byte("welcome"))
-	})
+
+	userRoutes := UserRouter(dbConn)
+	
+	r.Mount("/users", userRoutes)
 
 	return r
 }

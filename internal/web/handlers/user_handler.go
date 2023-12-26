@@ -1,34 +1,27 @@
 package handlers
 
 import (
-	"context"
 	"encoding/json"
 	"net/http"
 	"strconv"
 
+	"github.com/Manuelda10/restaurant-backend/internal/application"
 	"github.com/Manuelda10/restaurant-backend/internal/domain"
 )
 
-// UserService es una interfaz que define los métodos que el servicio de usuario debe implementar
-type UserUseCase interface {
-	CreateUser(ctx context.Context, user domain.User) error
-	GetUserByID(ctx context.Context, id int) (domain.User, error)
-	// Otros métodos...
-}
-
 type UserHandler struct {
-	userUseCase UserUseCase
+	userUseCase application.UserUseCase
 }
 
-func NewUserHandler(userUseCase UserUseCase) *UserHandler {
+func NewUserHandler(userUseCase *application.UserUseCase) *UserHandler {
 	return &UserHandler{
-		userUseCase: userUseCase,
+		userUseCase: *userUseCase,
 	}
 }
 
 //Esto es como un response, request
 func (h *UserHandler) CreateUser(w http.ResponseWriter, r *http.Request) {
-	var user domain.User
+	var user *domain.User
 	if err := json.NewDecoder(r.Body).Decode(&user); err != nil {
 			http.Error(w, err.Error(), http.StatusBadRequest)
 			return
@@ -51,7 +44,7 @@ func (h *UserHandler) GetUserByID(w http.ResponseWriter, r *http.Request) {
 			return
 	}
 
-	user, err := h.userUseCase.GetUserByID(r.Context(), id)
+	user, err := h.userUseCase.GetUserByID(r.Context(), int64(id))
 	if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
